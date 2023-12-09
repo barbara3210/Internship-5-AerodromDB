@@ -1,0 +1,159 @@
+-- Database: Aerodrom
+
+-- DROP DATABASE IF EXISTS "Aerodrom";
+
+CREATE DATABASE "Aerodrom"
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'English_United States.1252'
+    LC_CTYPE = 'English_United States.1252'
+    LOCALE_PROVIDER = 'libc'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
+	
+CREATE TABLE Aerodrom (
+    id_aerodrom SERIAL PRIMARY KEY,
+    naziv VARCHAR(100) NOT NULL,
+    grad VARCHAR(30)
+);
+
+CREATE TABLE Avion (
+    id_avion SERIAL PRIMARY KEY,
+    naziv VARCHAR(100) NOT NULL,
+	kapacitet_piste INT,
+    kapacitet_skladista INT,
+	status VARCHAR(50)
+);
+
+CREATE TABLE Let (
+    id_let SERIAL PRIMARY KEY,
+    datum DATETIME,
+    broj_prodanih_karata INT,
+    ocjena FLOAT,
+    aerodrom_polaska_id INT REFERENCES Aerodrom(id_aerodrom),
+    aerodrom_dolaska_id INT REFERENCES Aerodrom(id_aerodrom),
+    avion_id INT REFERENCES Avion(id_avion)
+);
+
+CREATE TABLE Karta (
+    id_karta SERIAL PRIMARY KEY,
+    serijski_broj VARCHAR(100) NOT NULL,
+	putnik_id INT REFERENCES Putnik(id_putnik),
+	let_id INT REFERENCES Let(id_let),
+	sjedalo VARCHAR(255),
+	cijena DOUBLE
+);
+
+CREATE TABLE Putnik (
+    id_putnik SERIAL PRIMARY KEY,
+    ime VARCHAR(30) NOT NULL,
+	prezime VARCHAR(30) NOT NULL,
+	datum_rodenja DATETIME,
+	prebivaliste VARCHAR(50) NOT NULL,
+	e-mail VARCHAR(50)
+	
+);
+
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (1, 'Dee', 'Janicek', '3/4/1949', '02554 Artisan Alley', 'djanicek0@merriam-webster.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (2, 'Rancell', 'Trounson', '4/5/1948', '916 Moland Parkway', 'rtrounson1@salon.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (3, 'Wolfgang', 'Rubinow', '6/25/1983', '9 Hovde Circle', 'wrubinow2@intel.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (4, 'Inglis', 'Dixie', '12/7/1959', '88064 Hagan Place', 'idixie3@istockphoto.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (5, 'Patsy', 'Downes', '11/7/1980', '7 Menomonie Street', 'pdownes4@mayoclinic.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (6, 'Tommie', 'Lyons', '8/6/2021', '58 Holmberg Circle', 'tlyons5@who.int');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (7, 'Tibold', 'Asp', '5/22/1948', '4 Lotheville Park', 'tasp6@ehow.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (8, 'Cherey', 'Gannon', '12/13/2013', '18026 Summerview Trail', 'cgannon7@alexa.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (9, 'Silvano', 'De Filippi', '4/21/2007', '621 Toban Junction', 'sdefilippi8@clickbank.net');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (10, 'Kylynn', 'Tomasino', '6/19/1949', '567 Duke Road', 'ktomasino9@sohu.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (11, 'Jacintha', 'Sherrington', '6/11/2013', '2768 Norway Maple Way', 'jsherringtona@ft.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (12, 'Erek', 'Pryde', '3/12/1998', '4 Hermina Junction', 'eprydeb@facebook.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (13, 'Montgomery', 'McGuigan', '9/23/1945', '62258 Hooker Street', 'mmcguiganc@phpbb.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (14, 'Deck', 'Milkin', '4/3/1972', '4 Village Green Hill', 'dmilkind@java.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (15, 'Mirna', 'Mulvany', '5/11/1982', '3 Judy Point', 'mmulvanye@php.net');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (16, 'Ketti', 'Windmill', '3/5/1971', '49168 Meadow Vale Crossing', 'kwindmillf@domainmarket.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (17, 'Alayne', 'Grason', '11/5/1980', '49191 Fair Oaks Lane', 'agrasong@irs.gov');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (18, 'Hurley', 'Moorerud', '11/6/1943', '214 Bartelt Trail', 'hmoorerudh@sciencedaily.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (19, 'Marcelo', 'Haddon', '5/9/2022', '87382 Drewry Terrace', 'mhaddoni@naver.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (20, 'Flem', 'Hickisson', '10/1/1953', '0 Loeprich Junction', 'fhickissonj@eventbrite.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (21, 'Annabal', 'Bensusan', '4/16/2017', '181 Brown Trail', 'abensusank@springer.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (22, 'Edward', 'Wigglesworth', '5/30/2017', '47 Lakeland Junction', 'ewigglesworthl@miitbeian.gov.cn');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (23, 'Marga', 'Whittles', '1/7/1964', '29 Michigan Trail', 'mwhittlesm@wunderground.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (24, 'Cherilynn', 'Annwyl', '4/4/1970', '278 Elka Trail', 'cannwyln@narod.ru');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (25, 'Madelin', 'Fiddler', '5/3/1985', '16 Brown Court', 'mfiddlero@walmart.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (26, 'Glennis', 'Griffoen', '10/3/1961', '07392 Di Loreto Terrace', 'ggriffoenp@vk.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (27, 'Babbette', 'Eliff', '7/2/1985', '832 South Road', 'beliffq@cafepress.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (28, 'Amerigo', 'Cuming', '5/3/1965', '93 Hermina Place', 'acumingr@istockphoto.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (29, 'Even', 'Antoney', '10/9/1997', '76395 Fairfield Street', 'eantoneys@instagram.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (30, 'Nikita', 'Worshall', '11/20/1961', '8 Twin Pines Court', 'nworshallt@360.cn');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (31, 'Nadya', 'Robb', '8/19/2009', '42 Coleman Circle', 'nrobbu@howstuffworks.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (32, 'Helen', 'Scattergood', '2/2/1986', '52 Mariners Cove Road', 'hscattergoodv@harvard.edu');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (33, 'Susy', 'Liddiard', '12/15/2021', '2 Lakewood Pass', 'sliddiardw@networkadvertising.org');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (34, 'Erhard', 'Rawlinson', '11/1/2011', '4 Sherman Center', 'erawlinsonx@gravatar.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (35, 'Ericka', 'Horley', '3/26/2004', '8 Main Parkway', 'ehorleyy@shop-pro.jp');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (36, 'Cacilie', 'Spittal', '8/17/1960', '87649 Sauthoff Pass', 'cspittalz@dedecms.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (37, 'Izak', 'Poltun', '12/19/2004', '61 Northview Park', 'ipoltun10@kickstarter.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (38, 'Andy', 'Biddles', '11/2/1950', '1 Hollow Ridge Avenue', 'abiddles11@clickbank.net');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (39, 'Mord', 'Margerrison', '8/9/1947', '50008 Oakridge Place', 'mmargerrison12@kickstarter.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (40, 'Bev', 'Van Arsdalen', '12/7/1976', '0811 Buhler Street', 'bvanarsdalen13@wp.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (41, 'Tore', 'Scotchbourouge', '1/16/1987', '9920 Kennedy Alley', 'tscotchbourouge14@kickstarter.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (42, 'Roberto', 'Babington', '9/26/2005', '86 Hanson Alley', 'rbabington15@t-online.de');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (43, 'Brandie', 'Blackley', '11/8/2006', '0 Grim Way', 'bblackley16@angelfire.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (44, 'Brana', 'Pauwel', '9/27/1975', '324 Corben Street', 'bpauwel17@oakley.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (45, 'Barbey', 'Klimkowski', '5/31/1960', '253 Forest Run Junction', 'bklimkowski18@noaa.gov');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (46, 'Andrea', 'Pavese', '5/28/2010', '88 Upham Circle', 'apavese19@washingtonpost.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (47, 'Adorne', 'Berzon', '6/13/1970', '539 Hoard Court', 'aberzon1a@umn.edu');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (48, 'Doreen', 'Brecknall', '3/25/2008', '9407 Melvin Alley', 'dbrecknall1b@sciencedirect.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (49, 'Oneida', 'Ber', '6/1/2009', '94399 Algoma Parkway', 'ober1c@springer.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (50, 'Webster', 'Tesh', '12/13/1972', '68 Fulton Terrace', 'wtesh1d@freewebs.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (51, 'Janessa', 'Graysmark', '6/29/1969', '32908 Blue Bill Park Hill', 'jgraysmark1e@cnet.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (52, 'Basilio', 'Delgardillo', '4/15/1995', '6 Forest Point', 'bdelgardillo1f@deviantart.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (53, 'Letty', 'Hayhurst', '4/29/1955', '6519 Muir Avenue', 'lhayhurst1g@ifeng.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (54, 'Lora', 'Minall', '10/22/1982', '4478 Fair Oaks Lane', 'lminall1h@drupal.org');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (55, 'Sophronia', 'Lurner', '12/17/1989', '6 Golf Junction', 'slurner1i@examiner.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (56, 'Lorry', 'Haighton', '12/3/2009', '0274 Bonner Place', 'lhaighton1j@wunderground.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (57, 'Lulu', 'Mullan', '8/9/1963', '10110 Darwin Junction', 'lmullan1k@omniture.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (58, 'Mozelle', 'Alves', '12/9/1970', '2530 Clove Way', 'malves1l@hc360.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (59, 'Barclay', 'Ridgers', '12/25/1993', '49 Evergreen Terrace', 'bridgers1m@bluehost.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (60, 'Barrie', 'Jerman', '11/12/1965', '0 Russell Drive', 'bjerman1n@sohu.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (61, 'Lucina', 'Sommerled', '8/2/1952', '7 Columbus Crossing', 'lsommerled1o@prnewswire.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (62, 'Arin', 'Hassewell', '2/22/1989', '43774 Miller Drive', 'ahassewell1p@omniture.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (63, 'Terza', 'Bownas', '9/6/2011', '69 Stone Corner Trail', 'tbownas1q@mail.ru');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (64, 'Gweneth', 'Sanja', '8/22/1944', '33692 Onsgard Crossing', 'gsanja1r@youtu.be');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (65, 'Sande', 'Cudiff', '7/19/1972', '5144 Coolidge Street', 'scudiff1s@house.gov');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (66, 'Carroll', 'Murrhaupt', '6/21/1987', '420 Badeau Place', 'cmurrhaupt1t@bbb.org');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (67, 'Fernandina', 'Pople', '4/13/1963', '42 Mitchell Park', 'fpople1u@booking.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (68, 'Hernando', 'Trotton', '3/29/1971', '407 International Center', 'htrotton1v@feedburner.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (69, 'Morry', 'Brickner', '10/14/1964', '46 Pankratz Center', 'mbrickner1w@soundcloud.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (70, 'Amandy', 'Maciejewski', '5/18/1994', '207 Briar Crest Way', 'amaciejewski1x@free.fr');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (71, 'Nathanial', 'Prichet', '8/29/1979', '7 Heffernan Street', 'nprichet1y@nasa.gov');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (72, 'Urbain', 'Fishwick', '1/27/1962', '4781 Haas Circle', 'ufishwick1z@ow.ly');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (73, 'Damon', 'Wetheril', '11/12/1984', '1 Summit Terrace', 'dwetheril20@drupal.org');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (74, 'Tatiania', 'Nunnerley', '11/10/1985', '5941 Hoard Place', 'tnunnerley21@desdev.cn');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (75, 'Minny', 'Naisbit', '10/23/1954', '69 Brickson Park Lane', 'mnaisbit22@flavors.me');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (76, 'Danyette', 'Bazely', '3/17/1951', '4 Fisk Point', 'dbazely23@state.tx.us');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (77, 'Conrade', 'Madelin', '11/6/1944', '3139 Dennis Park', 'cmadelin24@xinhuanet.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (78, 'Carmel', 'Gillease', '8/20/1960', '97680 Scoville Way', 'cgillease25@scientificamerican.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (79, 'Wolfy', 'Dorkens', '12/8/2022', '9 Sloan Pass', 'wdorkens26@list-manage.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (80, 'Marcellina', 'Luigi', '2/7/1944', '88801 Grasskamp Road', 'mluigi27@pen.io');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (81, 'Roda', 'Commins', '10/24/1989', '40829 Porter Street', 'rcommins28@lulu.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (82, 'Stefan', 'Norquoy', '1/7/1985', '97040 South Junction', 'snorquoy29@tripadvisor.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (83, 'Jere', 'Ludee', '1/7/2002', '2 Farmco Center', 'jludee2a@theatlantic.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (84, 'Doy', 'Andres', '2/17/2012', '88277 Oxford Way', 'dandres2b@jalbum.net');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (85, 'Tanhya', 'Purslow', '5/29/1994', '991 Ilene Place', 'tpurslow2c@spiegel.de');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (86, 'Kenna', 'Gobeau', '11/1/1996', '6761 Heath Place', 'kgobeau2d@cdbaby.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (87, 'Georgine', 'Rupert', '12/17/1974', '2 Westerfield Crossing', 'grupert2e@skyrock.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (88, 'Stephen', 'Glaves', '9/11/1988', '4 Cascade Hill', 'sglaves2f@so-net.ne.jp');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (89, 'Kala', 'Gosnay', '7/27/2013', '24 International Way', 'kgosnay2g@cnet.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (90, 'Sutherlan', 'O''Scollain', '8/14/1984', '3 Claremont Junction', 'soscollain2h@homestead.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (91, 'Heywood', 'Baltrushaitis', '2/26/2011', '522 Pond Way', 'hbaltrushaitis2i@cbsnews.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (92, 'Robinetta', 'Evesque', '7/27/1990', '91 Forest Run Way', 'revesque2j@nydailynews.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (93, 'Evonne', 'Dulieu', '12/28/2001', '17701 Tennyson Street', 'edulieu2k@irs.gov');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (94, 'Ruby', 'Planque', '2/9/1999', '6526 Clyde Gallagher Park', 'rplanque2l@ucsd.edu');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (95, 'Kristel', 'Antoniou', '11/5/1941', '07 Dawn Drive', 'kantoniou2m@istockphoto.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (96, 'Ferdie', 'Courtonne', '2/6/1973', '3 1st Junction', 'fcourtonne2n@squarespace.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (97, 'Charmian', 'Kupker', '12/18/2016', '472 Hayes Place', 'ckupker2o@ftc.gov');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (98, 'Fancie', 'Simner', '4/13/1983', '526 Ruskin Avenue', 'fsimner2p@about.me');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (99, 'Hetty', 'Cecchi', '11/14/1943', '35420 Charing Cross Drive', 'hcecchi2q@w3.org');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (100, 'Rasia', 'Lorain', '9/12/1998', '670 Forest Run Trail', 'rlorain2r@ibm.com');
+
