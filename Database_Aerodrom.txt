@@ -24,18 +24,33 @@ CREATE TABLE Avion (
     naziv VARCHAR(100) NOT NULL,
 	kapacitet_piste INT,
     kapacitet_skladista INT,
-	status VARCHAR(50)
+	status VARCHAR(50),
+	datum_proizvodnje DATE
 );
 
 CREATE TABLE Let (
     id_let SERIAL PRIMARY KEY,
-    datum DATETIME,
+    datum DATE,
     broj_prodanih_karata INT,
-    cijena FLOAT,
+    ocjena INT,
     aerodrom_polaska_id INT REFERENCES Aerodrom(id_aerodrom),
     aerodrom_dolaska_id INT REFERENCES Aerodrom(id_aerodrom),
     avion_id INT REFERENCES Avion(id_avion)
 );
+
+ALTER TABLE Let ADD CONSTRAINT check_datum CHECK (datum >= CURRENT_DATE);
+
+
+
+CREATE TABLE Let_Osoblje(
+	id_let INT REFERENCES Let(id_let),
+	id_osoblje INT REFERENCES Osoblje(id_osoblje),
+	id_pilot INT REFERENCES Pilot(id_pilot)
+);
+
+ALTER TABLE Let_Osoblje ADD FOREIGN KEY (id_let_osoblje) REFERENCES Let(id_let);
+
+
 
 CREATE TABLE Karta (
     id_karta SERIAL PRIMARY KEY,
@@ -43,121 +58,349 @@ CREATE TABLE Karta (
 	putnik_id INT REFERENCES Putnik(id_putnik),
 	let_id INT REFERENCES Let(id_let),
 	sjedalo VARCHAR(255),
-	cijena DOUBLE
+	cijena DECIMAL
 );
 
 CREATE TABLE Putnik (
     id_putnik SERIAL PRIMARY KEY,
     ime VARCHAR(30) NOT NULL,
 	prezime VARCHAR(30) NOT NULL,
-	datum_rodenja DATETIME,
+	datum_rodenja DATE,
 	prebivaliste VARCHAR(50) NOT NULL,
-	e-mail VARCHAR(50)
+	email VARCHAR(50)
 	
 );
 
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (1, 'Dee', 'Janicek', '3/4/1949', '02554 Artisan Alley', 'djanicek0@merriam-webster.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (2, 'Rancell', 'Trounson', '4/5/1948', '916 Moland Parkway', 'rtrounson1@salon.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (3, 'Wolfgang', 'Rubinow', '6/25/1983', '9 Hovde Circle', 'wrubinow2@intel.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (4, 'Inglis', 'Dixie', '12/7/1959', '88064 Hagan Place', 'idixie3@istockphoto.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (5, 'Patsy', 'Downes', '11/7/1980', '7 Menomonie Street', 'pdownes4@mayoclinic.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (6, 'Tommie', 'Lyons', '8/6/2021', '58 Holmberg Circle', 'tlyons5@who.int');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (7, 'Tibold', 'Asp', '5/22/1948', '4 Lotheville Park', 'tasp6@ehow.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (8, 'Cherey', 'Gannon', '12/13/2013', '18026 Summerview Trail', 'cgannon7@alexa.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (9, 'Silvano', 'De Filippi', '4/21/2007', '621 Toban Junction', 'sdefilippi8@clickbank.net');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (10, 'Kylynn', 'Tomasino', '6/19/1949', '567 Duke Road', 'ktomasino9@sohu.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (11, 'Jacintha', 'Sherrington', '6/11/2013', '2768 Norway Maple Way', 'jsherringtona@ft.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (12, 'Erek', 'Pryde', '3/12/1998', '4 Hermina Junction', 'eprydeb@facebook.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (13, 'Montgomery', 'McGuigan', '9/23/1945', '62258 Hooker Street', 'mmcguiganc@phpbb.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (14, 'Deck', 'Milkin', '4/3/1972', '4 Village Green Hill', 'dmilkind@java.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (15, 'Mirna', 'Mulvany', '5/11/1982', '3 Judy Point', 'mmulvanye@php.net');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (16, 'Ketti', 'Windmill', '3/5/1971', '49168 Meadow Vale Crossing', 'kwindmillf@domainmarket.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (17, 'Alayne', 'Grason', '11/5/1980', '49191 Fair Oaks Lane', 'agrasong@irs.gov');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (18, 'Hurley', 'Moorerud', '11/6/1943', '214 Bartelt Trail', 'hmoorerudh@sciencedaily.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (19, 'Marcelo', 'Haddon', '5/9/2022', '87382 Drewry Terrace', 'mhaddoni@naver.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (20, 'Flem', 'Hickisson', '10/1/1953', '0 Loeprich Junction', 'fhickissonj@eventbrite.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (21, 'Annabal', 'Bensusan', '4/16/2017', '181 Brown Trail', 'abensusank@springer.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (22, 'Edward', 'Wigglesworth', '5/30/2017', '47 Lakeland Junction', 'ewigglesworthl@miitbeian.gov.cn');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (23, 'Marga', 'Whittles', '1/7/1964', '29 Michigan Trail', 'mwhittlesm@wunderground.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (24, 'Cherilynn', 'Annwyl', '4/4/1970', '278 Elka Trail', 'cannwyln@narod.ru');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (25, 'Madelin', 'Fiddler', '5/3/1985', '16 Brown Court', 'mfiddlero@walmart.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (26, 'Glennis', 'Griffoen', '10/3/1961', '07392 Di Loreto Terrace', 'ggriffoenp@vk.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (27, 'Babbette', 'Eliff', '7/2/1985', '832 South Road', 'beliffq@cafepress.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (28, 'Amerigo', 'Cuming', '5/3/1965', '93 Hermina Place', 'acumingr@istockphoto.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (29, 'Even', 'Antoney', '10/9/1997', '76395 Fairfield Street', 'eantoneys@instagram.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (30, 'Nikita', 'Worshall', '11/20/1961', '8 Twin Pines Court', 'nworshallt@360.cn');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (31, 'Nadya', 'Robb', '8/19/2009', '42 Coleman Circle', 'nrobbu@howstuffworks.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (32, 'Helen', 'Scattergood', '2/2/1986', '52 Mariners Cove Road', 'hscattergoodv@harvard.edu');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (33, 'Susy', 'Liddiard', '12/15/2021', '2 Lakewood Pass', 'sliddiardw@networkadvertising.org');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (34, 'Erhard', 'Rawlinson', '11/1/2011', '4 Sherman Center', 'erawlinsonx@gravatar.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (35, 'Ericka', 'Horley', '3/26/2004', '8 Main Parkway', 'ehorleyy@shop-pro.jp');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (36, 'Cacilie', 'Spittal', '8/17/1960', '87649 Sauthoff Pass', 'cspittalz@dedecms.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (37, 'Izak', 'Poltun', '12/19/2004', '61 Northview Park', 'ipoltun10@kickstarter.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (38, 'Andy', 'Biddles', '11/2/1950', '1 Hollow Ridge Avenue', 'abiddles11@clickbank.net');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (39, 'Mord', 'Margerrison', '8/9/1947', '50008 Oakridge Place', 'mmargerrison12@kickstarter.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (40, 'Bev', 'Van Arsdalen', '12/7/1976', '0811 Buhler Street', 'bvanarsdalen13@wp.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (41, 'Tore', 'Scotchbourouge', '1/16/1987', '9920 Kennedy Alley', 'tscotchbourouge14@kickstarter.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (42, 'Roberto', 'Babington', '9/26/2005', '86 Hanson Alley', 'rbabington15@t-online.de');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (43, 'Brandie', 'Blackley', '11/8/2006', '0 Grim Way', 'bblackley16@angelfire.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (44, 'Brana', 'Pauwel', '9/27/1975', '324 Corben Street', 'bpauwel17@oakley.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (45, 'Barbey', 'Klimkowski', '5/31/1960', '253 Forest Run Junction', 'bklimkowski18@noaa.gov');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (46, 'Andrea', 'Pavese', '5/28/2010', '88 Upham Circle', 'apavese19@washingtonpost.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (47, 'Adorne', 'Berzon', '6/13/1970', '539 Hoard Court', 'aberzon1a@umn.edu');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (48, 'Doreen', 'Brecknall', '3/25/2008', '9407 Melvin Alley', 'dbrecknall1b@sciencedirect.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (49, 'Oneida', 'Ber', '6/1/2009', '94399 Algoma Parkway', 'ober1c@springer.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (50, 'Webster', 'Tesh', '12/13/1972', '68 Fulton Terrace', 'wtesh1d@freewebs.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (51, 'Janessa', 'Graysmark', '6/29/1969', '32908 Blue Bill Park Hill', 'jgraysmark1e@cnet.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (52, 'Basilio', 'Delgardillo', '4/15/1995', '6 Forest Point', 'bdelgardillo1f@deviantart.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (53, 'Letty', 'Hayhurst', '4/29/1955', '6519 Muir Avenue', 'lhayhurst1g@ifeng.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (54, 'Lora', 'Minall', '10/22/1982', '4478 Fair Oaks Lane', 'lminall1h@drupal.org');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (55, 'Sophronia', 'Lurner', '12/17/1989', '6 Golf Junction', 'slurner1i@examiner.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (56, 'Lorry', 'Haighton', '12/3/2009', '0274 Bonner Place', 'lhaighton1j@wunderground.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (57, 'Lulu', 'Mullan', '8/9/1963', '10110 Darwin Junction', 'lmullan1k@omniture.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (58, 'Mozelle', 'Alves', '12/9/1970', '2530 Clove Way', 'malves1l@hc360.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (59, 'Barclay', 'Ridgers', '12/25/1993', '49 Evergreen Terrace', 'bridgers1m@bluehost.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (60, 'Barrie', 'Jerman', '11/12/1965', '0 Russell Drive', 'bjerman1n@sohu.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (61, 'Lucina', 'Sommerled', '8/2/1952', '7 Columbus Crossing', 'lsommerled1o@prnewswire.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (62, 'Arin', 'Hassewell', '2/22/1989', '43774 Miller Drive', 'ahassewell1p@omniture.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (63, 'Terza', 'Bownas', '9/6/2011', '69 Stone Corner Trail', 'tbownas1q@mail.ru');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (64, 'Gweneth', 'Sanja', '8/22/1944', '33692 Onsgard Crossing', 'gsanja1r@youtu.be');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (65, 'Sande', 'Cudiff', '7/19/1972', '5144 Coolidge Street', 'scudiff1s@house.gov');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (66, 'Carroll', 'Murrhaupt', '6/21/1987', '420 Badeau Place', 'cmurrhaupt1t@bbb.org');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (67, 'Fernandina', 'Pople', '4/13/1963', '42 Mitchell Park', 'fpople1u@booking.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (68, 'Hernando', 'Trotton', '3/29/1971', '407 International Center', 'htrotton1v@feedburner.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (69, 'Morry', 'Brickner', '10/14/1964', '46 Pankratz Center', 'mbrickner1w@soundcloud.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (70, 'Amandy', 'Maciejewski', '5/18/1994', '207 Briar Crest Way', 'amaciejewski1x@free.fr');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (71, 'Nathanial', 'Prichet', '8/29/1979', '7 Heffernan Street', 'nprichet1y@nasa.gov');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (72, 'Urbain', 'Fishwick', '1/27/1962', '4781 Haas Circle', 'ufishwick1z@ow.ly');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (73, 'Damon', 'Wetheril', '11/12/1984', '1 Summit Terrace', 'dwetheril20@drupal.org');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (74, 'Tatiania', 'Nunnerley', '11/10/1985', '5941 Hoard Place', 'tnunnerley21@desdev.cn');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (75, 'Minny', 'Naisbit', '10/23/1954', '69 Brickson Park Lane', 'mnaisbit22@flavors.me');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (76, 'Danyette', 'Bazely', '3/17/1951', '4 Fisk Point', 'dbazely23@state.tx.us');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (77, 'Conrade', 'Madelin', '11/6/1944', '3139 Dennis Park', 'cmadelin24@xinhuanet.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (78, 'Carmel', 'Gillease', '8/20/1960', '97680 Scoville Way', 'cgillease25@scientificamerican.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (79, 'Wolfy', 'Dorkens', '12/8/2022', '9 Sloan Pass', 'wdorkens26@list-manage.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (80, 'Marcellina', 'Luigi', '2/7/1944', '88801 Grasskamp Road', 'mluigi27@pen.io');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (81, 'Roda', 'Commins', '10/24/1989', '40829 Porter Street', 'rcommins28@lulu.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (82, 'Stefan', 'Norquoy', '1/7/1985', '97040 South Junction', 'snorquoy29@tripadvisor.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (83, 'Jere', 'Ludee', '1/7/2002', '2 Farmco Center', 'jludee2a@theatlantic.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (84, 'Doy', 'Andres', '2/17/2012', '88277 Oxford Way', 'dandres2b@jalbum.net');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (85, 'Tanhya', 'Purslow', '5/29/1994', '991 Ilene Place', 'tpurslow2c@spiegel.de');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (86, 'Kenna', 'Gobeau', '11/1/1996', '6761 Heath Place', 'kgobeau2d@cdbaby.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (87, 'Georgine', 'Rupert', '12/17/1974', '2 Westerfield Crossing', 'grupert2e@skyrock.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (88, 'Stephen', 'Glaves', '9/11/1988', '4 Cascade Hill', 'sglaves2f@so-net.ne.jp');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (89, 'Kala', 'Gosnay', '7/27/2013', '24 International Way', 'kgosnay2g@cnet.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (90, 'Sutherlan', 'O''Scollain', '8/14/1984', '3 Claremont Junction', 'soscollain2h@homestead.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (91, 'Heywood', 'Baltrushaitis', '2/26/2011', '522 Pond Way', 'hbaltrushaitis2i@cbsnews.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (92, 'Robinetta', 'Evesque', '7/27/1990', '91 Forest Run Way', 'revesque2j@nydailynews.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (93, 'Evonne', 'Dulieu', '12/28/2001', '17701 Tennyson Street', 'edulieu2k@irs.gov');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (94, 'Ruby', 'Planque', '2/9/1999', '6526 Clyde Gallagher Park', 'rplanque2l@ucsd.edu');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (95, 'Kristel', 'Antoniou', '11/5/1941', '07 Dawn Drive', 'kantoniou2m@istockphoto.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (96, 'Ferdie', 'Courtonne', '2/6/1973', '3 1st Junction', 'fcourtonne2n@squarespace.com');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (97, 'Charmian', 'Kupker', '12/18/2016', '472 Hayes Place', 'ckupker2o@ftc.gov');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (98, 'Fancie', 'Simner', '4/13/1983', '526 Ruskin Avenue', 'fsimner2p@about.me');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (99, 'Hetty', 'Cecchi', '11/14/1943', '35420 Charing Cross Drive', 'hcecchi2q@w3.org');
-insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, e-mail) values (100, 'Rasia', 'Lorain', '9/12/1998', '670 Forest Run Trail', 'rlorain2r@ibm.com');
+CREATE TABLE Pilot (
+    id_pilot SERIAL PRIMARY KEY,
+    ime VARCHAR(30) NOT NULL,
+	prezime VARCHAR(30) NOT NULL,
+	datum_rodenja DATE,
+	placa DECIMAL	
+);
 
-insert into Aerodrom (id_aerodrom, naziv, grad) values (1, 'Rovaniemi Airport', 'Rovaniemi');
+CREATE TABLE Osoblje (
+    id_osoblje SERIAL PRIMARY KEY,
+    ime VARCHAR(30) NOT NULL,
+	prezime VARCHAR(30) NOT NULL,
+	datum_rodenja DATE
+	
+);
+
+CREATE TABLE Loyalty_Kartica (
+    id_loyalty SERIAL PRIMARY KEY,
+    korisnik_id INT REFERENCES Putnik(id_putnik) UNIQUE,
+    trajanje_godina INT,
+    broj_kupljenih_karata INT
+);
+
+
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (1, 'Redford', 'Purkis', '4/4/1985');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (2, 'Nappy', 'Rumens', '9/2/2001');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (3, 'Irene', 'Keenlyside', '8/15/1992');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (4, 'Hal', 'Blundel', '7/11/1999');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (5, 'Dur', 'McMearty', '3/31/1969');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (6, 'Lewiss', 'Maltster', '12/30/1997');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (7, 'Loella', 'Luxen', '11/6/1975');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (8, 'Ceil', 'Esposi', '4/5/1987');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (9, 'Lemmie', 'Croxall', '6/13/2003');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (10, 'Lotte', 'Sumption', '4/11/1980');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (11, 'Florencia', 'Cousin', '8/1/1985');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (12, 'Humfrey', 'Foulgham', '4/30/1969');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (13, 'Carmelita', 'Lidell', '8/27/1986');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (14, 'Nadya', 'Sorrell', '6/11/1970');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (15, 'Almeria', 'Harvard', '10/31/1982');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (16, 'Vannie', 'Gibson', '8/29/1992');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (17, 'Conroy', 'Masseo', '10/21/1981');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (18, 'Grata', 'Quick', '5/9/1997');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (19, 'Karylin', 'Byfield', '2/18/1988');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (20, 'Isidora', 'Baylay', '9/13/2002');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (21, 'Kimmi', 'Dwelly', '10/20/1965');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (22, 'Tessy', 'Safe', '8/4/2001');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (23, 'Bella', 'Ramsay', '8/13/2003');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (24, 'Even', 'Friese', '8/19/1977');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (25, 'Dario', 'Lafaye', '11/22/2002');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (26, 'Warden', 'Creagh', '4/11/1965');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (27, 'Abrahan', 'Bullivent', '7/16/1975');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (28, 'Simon', 'Southwick', '8/4/1984');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (29, 'Rozanne', 'Vicioso', '3/29/1988');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (30, 'Giselbert', 'Teodorski', '7/4/1999');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (31, 'Malena', 'Salt', '6/30/1972');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (32, 'Jermayne', 'Dumbarton', '12/4/1988');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (33, 'Zahara', 'Rawlinson', '3/29/1982');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (34, 'Andromache', 'Livick', '4/21/1996');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (35, 'Ibby', 'Fadell', '7/4/1977');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (36, 'Lester', 'Moakes', '5/17/2003');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (37, 'Sheffie', 'Dimeloe', '11/2/1998');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (38, 'Raychel', 'Darke', '1/30/2002');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (39, 'Queenie', 'Simonson', '7/21/1991');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (40, 'Samaria', 'Iacopini', '2/22/1993');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (41, 'Lucretia', 'Brazener', '1/16/2003');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (42, 'Quintina', 'Chidler', '2/14/1974');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (43, 'Gerladina', 'Cathersides', '1/30/1999');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (44, 'Carmine', 'Mawtus', '1/2/1969');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (45, 'Rora', 'Fossick', '12/4/1976');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (46, 'Nikaniki', 'Cavell', '8/23/1966');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (47, 'Osborne', 'Sproat', '10/24/1965');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (48, 'Garvin', 'Causnett', '10/30/2002');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (49, 'Candi', 'Neising', '1/25/1999');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (50, 'Bendick', 'Drennan', '11/27/1966');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (51, 'Titos', 'Arnault', '3/14/1985');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (52, 'Whitney', 'Sargerson', '3/1/1978');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (53, 'Heath', 'Zelley', '12/31/1974');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (54, 'Candida', 'Werner', '7/3/1986');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (55, 'Hew', 'Lidierth', '1/25/1995');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (56, 'Constancy', 'Hoxey', '7/30/2003');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (57, 'Erda', 'Ungaretti', '3/26/1991');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (58, 'Nannette', 'Lovegrove', '11/7/1991');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (59, 'Lucie', 'Copnar', '5/25/1986');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (60, 'Trix', 'Couves', '5/5/1974');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (61, 'Jodi', 'Kirke', '12/3/2003');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (62, 'Robinetta', 'Robyns', '2/1/2001');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (63, 'Kissee', 'Lintall', '12/3/1982');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (64, 'Clarette', 'Calvey', '11/25/1977');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (65, 'Vickie', 'Bernolet', '6/15/1982');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (66, 'Collin', 'Plester', '12/4/1995');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (67, 'Verina', 'Jablonski', '10/4/1997');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (68, 'Carina', 'Yakebovich', '8/21/1995');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (69, 'Iggy', 'Gianelli', '1/9/1971');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (70, 'Candi', 'Ticic', '3/19/1985');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (71, 'Tyne', 'McCluney', '3/11/1967');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (72, 'Pepi', 'Grono', '8/8/1968');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (73, 'Conney', 'Caudrey', '11/5/1999');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (74, 'Raimund', 'Redfern', '3/25/1968');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (75, 'Amble', 'Kidsley', '5/5/1986');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (76, 'Ethyl', 'Cheevers', '11/14/1991');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (77, 'Karly', 'Danhel', '1/24/1968');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (78, 'Dorene', 'Agus', '4/28/1989');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (79, 'Franklyn', 'Ireson', '10/6/1965');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (80, 'Kaycee', 'Osgodby', '10/19/1985');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (81, 'Lynda', 'Carrett', '10/10/1978');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (82, 'Dusty', 'Rozsa', '9/20/1977');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (83, 'Nikkie', 'Isacq', '6/16/1996');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (84, 'Taite', 'Stannah', '12/25/1994');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (85, 'Hector', 'Grime', '11/10/1987');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (86, 'Merridie', 'Tedstone', '12/30/1992');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (87, 'Dunc', 'Skitterel', '6/22/1977');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (88, 'Belva', 'Rushworth', '10/4/1980');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (89, 'Tish', 'Dymocke', '8/31/1973');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (90, 'Josias', 'Bater', '4/7/1979');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (91, 'Kristopher', 'Handmore', '6/15/1968');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (92, 'Ely', 'Willerstone', '5/24/1975');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (93, 'Val', 'Prettyman', '2/27/1978');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (94, 'Claudian', 'Earry', '11/13/1966');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (95, 'Gillan', 'Hegley', '1/22/1974');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (96, 'Aleen', 'Renner', '4/28/1966');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (97, 'Karen', 'Poles', '8/3/1999');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (98, 'Kennith', 'Keniwell', '7/21/2003');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (99, 'Heinrick', 'Dybbe', '8/29/1974');
+insert into Osoblje (id_osoblje, ime, prezime, datum_rodenja) values (100, 'Billy', 'Aspey', '9/6/1973');
+
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (1, 'Helge', 'Styche', '1/14/1978', 2678.14);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (2, 'Kalle', 'Lermit', '7/16/1975', 1847.47);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (3, 'Corbet', 'Layburn', '5/4/1989', 1261.64);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (4, 'Andra', 'Bolsteridge', '11/12/1986', 2589.6);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (5, 'Galvan', 'Skellen', '8/28/1994', 2862.04);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (6, 'Forster', 'Labat', '12/21/1964', 1786.39);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (7, 'Stern', 'Melburg', '10/27/2002', 1317.08);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (8, 'Danni', 'Bantham', '1/17/1999', 2072.43);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (9, 'Ashlin', 'de Najera', '11/12/1996', 1942.38);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (10, 'Nichol', 'Coppeard', '2/22/1976', 1877.78);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (11, 'Teddy', 'Sear', '7/3/1976', 1228.15);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (12, 'Tallie', 'Nockolds', '6/1/1972', 2944.08);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (13, 'Cathe', 'Lomasna', '4/4/1986', 1630.6);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (14, 'Wilfrid', 'Maytom', '9/4/1971', 1488.03);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (15, 'Darrel', 'Wilflinger', '3/30/1968', 1374.01);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (16, 'Leupold', 'Probat', '7/14/1995', 1532.38);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (17, 'Dunn', 'Tarbath', '11/2/1976', 1079.18);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (18, 'Tallia', 'Blanket', '9/22/1977', 2775.94);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (19, 'Nolie', 'Burlingham', '4/21/1967', 1031.28);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (20, 'Bev', 'Christley', '2/28/1977', 1766.13);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (21, 'Traver', 'Liebrecht', '6/29/1969', 2131.59);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (22, 'Bald', 'Matuskiewicz', '4/28/1972', 1803.29);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (23, 'Minetta', 'Geratasch', '2/12/1966', 1234.19);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (24, 'Trev', 'Rozea', '12/20/1971', 2903.98);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (25, 'Irina', 'Betke', '11/8/1978', 1882.16);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (26, 'Irma', 'Millmore', '9/9/1994', 2760.76);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (27, 'Horten', 'Cornelissen', '2/14/1979', 2890.0);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (28, 'Dore', 'Lepere', '1/12/1982', 1751.6);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (29, 'Doria', 'Mingaye', '12/31/1971', 2055.9);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (30, 'Rowe', 'Yakunikov', '9/30/1991', 2125.69);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (31, 'Florencia', 'Sinclaire', '7/10/1980', 2911.98);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (32, 'Morris', 'Hubach', '6/15/1978', 2336.8);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (33, 'Reggy', 'Masters', '2/1/1978', 1608.92);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (34, 'Delbert', 'Pilling', '9/27/1987', 2432.38);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (35, 'Chaddy', 'Washbrook', '5/22/2000', 1530.92);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (36, 'Penni', 'Cantopher', '8/17/1989', 2092.01);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (37, 'Friedrich', 'McAster', '12/5/1978', 2169.74);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (38, 'Roosevelt', 'Jaycocks', '10/22/1987', 2106.64);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (39, 'Sheelah', 'Pahl', '6/25/1975', 1392.43);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (40, 'Amberly', 'Skehan', '8/13/1983', 2543.31);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (41, 'Car', 'Franca', '6/26/1998', 1152.66);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (42, 'Gaelan', 'Drewitt', '5/3/1988', 2303.59);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (43, 'Godart', 'Thickin', '7/1/2002', 1870.44);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (44, 'Maurita', 'O'' Mullan', '6/20/1970', 1909.17);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (45, 'Morgana', 'Minchi', '12/2/1993', 2703.04);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (46, 'Herschel', 'Clymo', '5/4/2000', 2760.92);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (47, 'Karly', 'Latch', '3/18/1981', 2410.67);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (48, 'Olav', 'Sherrin', '4/30/1989', 1568.66);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (49, 'Loy', 'Fennick', '10/18/1975', 1112.9);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (50, 'Muhammad', 'Dymidowski', '8/20/2000', 2043.03);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (51, 'Currey', 'Lacroutz', '4/25/2001', 1105.6);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (52, 'Karrie', 'Felstead', '2/8/1989', 1616.86);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (53, 'Kalle', 'Shimwell', '9/21/1970', 1912.81);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (54, 'Scarlet', 'Grabiec', '7/23/1980', 1326.63);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (55, 'Adrianne', 'Shurman', '2/8/1983', 2910.29);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (56, 'Cele', 'Graundisson', '9/9/1985', 1169.64);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (57, 'Ricki', 'Fenix', '12/14/1994', 2044.1);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (58, 'Fiona', 'Klimentyev', '12/30/1968', 2452.42);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (59, 'Susette', 'Badwick', '10/31/1994', 1752.34);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (60, 'Sarajane', 'Labram', '12/7/1986', 2067.52);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (61, 'Bonnibelle', 'Ratke', '4/18/1978', 2495.51);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (62, 'Hal', 'Schruurs', '3/11/1974', 1739.91);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (63, 'Lane', 'Swinford', '9/5/1989', 1762.17);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (64, 'Osborn', 'Cleare', '6/2/1984', 1989.4);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (65, 'Guthrey', 'Pedracci', '7/12/1986', 2063.14);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (66, 'Natassia', 'Farington', '6/13/2001', 2931.53);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (67, 'Almeda', 'Abdie', '3/22/1978', 2616.56);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (68, 'Hammad', 'Thorby', '11/30/1966', 1336.9);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (69, 'Jamison', 'Rozenzweig', '12/17/1992', 2057.2);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (70, 'Gus', 'Arlt', '12/24/1992', 2820.48);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (71, 'Irving', 'Cuff', '2/2/1976', 1060.65);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (72, 'Daniel', 'Wadelin', '1/21/1967', 1545.21);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (73, 'Alanson', 'Aughtie', '8/8/2002', 1624.15);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (74, 'Vernor', 'Blackmoor', '9/7/1986', 2618.18);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (75, 'Jillene', 'Duxbury', '5/5/1976', 2881.2);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (76, 'Brandais', 'Solomonides', '3/8/2001', 2303.13);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (77, 'Saul', 'Morley', '4/2/1984', 1181.62);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (78, 'Angelique', 'Laviss', '7/13/1994', 1743.56);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (79, 'Deanne', 'Causbey', '2/1/1983', 1669.52);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (80, 'Lucas', 'Kivell', '10/21/1998', 2981.4);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (81, 'Meggi', 'Bleiman', '11/22/1997', 1798.61);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (82, 'Otha', 'Tirkin', '1/20/1998', 1723.38);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (83, 'Liam', 'Boxall', '5/6/1975', 2233.5);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (84, 'Dalenna', 'Glede', '7/3/1984', 2559.64);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (85, 'Wilona', 'Sallinger', '2/2/1974', 2610.76);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (86, 'Ruthann', 'Gaddie', '12/4/2001', 2565.85);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (87, 'Clayton', 'Garrie', '4/23/1970', 1464.36);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (88, 'Jeff', 'Paler', '11/14/1968', 1165.48);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (89, 'Trip', 'Chaim', '5/26/1979', 1233.55);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (90, 'Robenia', 'Lavery', '3/29/1967', 2634.71);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (91, 'Zak', 'MacCrachen', '10/25/1976', 2437.82);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (92, 'Karlens', 'McCoid', '6/22/1968', 2701.56);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (93, 'Lovell', 'Lesurf', '1/26/1978', 1000.41);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (94, 'Michel', 'Cunde', '8/5/1966', 2043.1);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (95, 'Park', 'Renton', '2/26/1995', 2046.27);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (96, 'Jonathan', 'Hotchkin', '10/10/1982', 2124.27);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (97, 'Corina', 'Rulton', '11/3/1973', 1154.51);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (98, 'Wenda', 'Godilington', '6/3/1977', 1994.71);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (99, 'Gennie', 'Duplain', '3/29/1986', 1544.93);
+insert into Pilot (id_pilot, ime, prezime, datum_rodenja, placa) values (100, 'Leonard', 'Denning', '4/7/1986', 1017.65);
+
+
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (1, 'Dee', 'Janicek', '3/4/1949', '02554 Artisan Alley', 'djanicek0@merriam-webster.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (2, 'Rancell', 'Trounson', '4/5/1948', '916 Moland Parkway', 'rtrounson1@salon.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (3, 'Wolfgang', 'Rubinow', '6/25/1983', '9 Hovde Circle', 'wrubinow2@intel.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (4, 'Inglis', 'Dixie', '12/7/1959', '88064 Hagan Place', 'idixie3@istockphoto.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (5, 'Patsy', 'Downes', '11/7/1980', '7 Menomonie Street', 'pdownes4@mayoclinic.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (6, 'Tommie', 'Lyons', '8/6/2021', '58 Holmberg Circle', 'tlyons5@who.int');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (7, 'Tibold', 'Asp', '5/22/1948', '4 Lotheville Park', 'tasp6@ehow.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (8, 'Cherey', 'Gannon', '12/13/2013', '18026 Summerview Trail', 'cgannon7@alexa.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (9, 'Silvano', 'De Filippi', '4/21/2007', '621 Toban Junction', 'sdefilippi8@clickbank.net');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (10, 'Kylynn', 'Tomasino', '6/19/1949', '567 Duke Road', 'ktomasino9@sohu.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (11, 'Jacintha', 'Sherrington', '6/11/2013', '2768 Norway Maple Way', 'jsherringtona@ft.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (12, 'Erek', 'Pryde', '3/12/1998', '4 Hermina Junction', 'eprydeb@facebook.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (13, 'Montgomery', 'McGuigan', '9/23/1945', '62258 Hooker Street', 'mmcguiganc@phpbb.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (14, 'Deck', 'Milkin', '4/3/1972', '4 Village Green Hill', 'dmilkind@java.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (15, 'Mirna', 'Mulvany', '5/11/1982', '3 Judy Point', 'mmulvanye@php.net');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (16, 'Ketti', 'Windmill', '3/5/1971', '49168 Meadow Vale Crossing', 'kwindmillf@domainmarket.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (17, 'Alayne', 'Grason', '11/5/1980', '49191 Fair Oaks Lane', 'agrasong@irs.gov');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (18, 'Hurley', 'Moorerud', '11/6/1943', '214 Bartelt Trail', 'hmoorerudh@sciencedaily.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (19, 'Marcelo', 'Haddon', '5/9/2022', '87382 Drewry Terrace', 'mhaddoni@naver.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (20, 'Flem', 'Hickisson', '10/1/1953', '0 Loeprich Junction', 'fhickissonj@eventbrite.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (21, 'Annabal', 'Bensusan', '4/16/2017', '181 Brown Trail', 'abensusank@springer.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (22, 'Edward', 'Wigglesworth', '5/30/2017', '47 Lakeland Junction', 'ewigglesworthl@miitbeian.gov.cn');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (23, 'Marga', 'Whittles', '1/7/1964', '29 Michigan Trail', 'mwhittlesm@wunderground.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (24, 'Cherilynn', 'Annwyl', '4/4/1970', '278 Elka Trail', 'cannwyln@narod.ru');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (25, 'Madelin', 'Fiddler', '5/3/1985', '16 Brown Court', 'mfiddlero@walmart.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (26, 'Glennis', 'Griffoen', '10/3/1961', '07392 Di Loreto Terrace', 'ggriffoenp@vk.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (27, 'Babbette', 'Eliff', '7/2/1985', '832 South Road', 'beliffq@cafepress.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (28, 'Amerigo', 'Cuming', '5/3/1965', '93 Hermina Place', 'acumingr@istockphoto.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (29, 'Even', 'Antoney', '10/9/1997', '76395 Fairfield Street', 'eantoneys@instagram.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (30, 'Nikita', 'Worshall', '11/20/1961', '8 Twin Pines Court', 'nworshallt@360.cn');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (31, 'Nadya', 'Robb', '8/19/2009', '42 Coleman Circle', 'nrobbu@howstuffworks.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (32, 'Helen', 'Scattergood', '2/2/1986', '52 Mariners Cove Road', 'hscattergoodv@harvard.edu');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (33, 'Susy', 'Liddiard', '12/15/2021', '2 Lakewood Pass', 'sliddiardw@networkadvertising.org');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (34, 'Erhard', 'Rawlinson', '11/1/2011', '4 Sherman Center', 'erawlinsonx@gravatar.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (35, 'Ericka', 'Horley', '3/26/2004', '8 Main Parkway', 'ehorleyy@shop-pro.jp');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (36, 'Cacilie', 'Spittal', '8/17/1960', '87649 Sauthoff Pass', 'cspittalz@dedecms.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (37, 'Izak', 'Poltun', '12/19/2004', '61 Northview Park', 'ipoltun10@kickstarter.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (38, 'Andy', 'Biddles', '11/2/1950', '1 Hollow Ridge Avenue', 'abiddles11@clickbank.net');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (39, 'Mord', 'Margerrison', '8/9/1947', '50008 Oakridge Place', 'mmargerrison12@kickstarter.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (40, 'Bev', 'Van Arsdalen', '12/7/1976', '0811 Buhler Street', 'bvanarsdalen13@wp.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (41, 'Tore', 'Scotchbourouge', '1/16/1987', '9920 Kennedy Alley', 'tscotchbourouge14@kickstarter.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (42, 'Roberto', 'Babington', '9/26/2005', '86 Hanson Alley', 'rbabington15@t-online.de');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (43, 'Brandie', 'Blackley', '11/8/2006', '0 Grim Way', 'bblackley16@angelfire.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (44, 'Brana', 'Pauwel', '9/27/1975', '324 Corben Street', 'bpauwel17@oakley.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (45, 'Barbey', 'Klimkowski', '5/31/1960', '253 Forest Run Junction', 'bklimkowski18@noaa.gov');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (46, 'Andrea', 'Pavese', '5/28/2010', '88 Upham Circle', 'apavese19@washingtonpost.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (47, 'Adorne', 'Berzon', '6/13/1970', '539 Hoard Court', 'aberzon1a@umn.edu');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (48, 'Doreen', 'Brecknall', '3/25/2008', '9407 Melvin Alley', 'dbrecknall1b@sciencedirect.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (49, 'Oneida', 'Ber', '6/1/2009', '94399 Algoma Parkway', 'ober1c@springer.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (50, 'Webster', 'Tesh', '12/13/1972', '68 Fulton Terrace', 'wtesh1d@freewebs.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (51, 'Janessa', 'Graysmark', '6/29/1969', '32908 Blue Bill Park Hill', 'jgraysmark1e@cnet.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (52, 'Basilio', 'Delgardillo', '4/15/1995', '6 Forest Point', 'bdelgardillo1f@deviantart.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (53, 'Letty', 'Hayhurst', '4/29/1955', '6519 Muir Avenue', 'lhayhurst1g@ifeng.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (54, 'Lora', 'Minall', '10/22/1982', '4478 Fair Oaks Lane', 'lminall1h@drupal.org');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (55, 'Sophronia', 'Lurner', '12/17/1989', '6 Golf Junction', 'slurner1i@examiner.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (56, 'Lorry', 'Haighton', '12/3/2009', '0274 Bonner Place', 'lhaighton1j@wunderground.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (57, 'Lulu', 'Mullan', '8/9/1963', '10110 Darwin Junction', 'lmullan1k@omniture.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (58, 'Mozelle', 'Alves', '12/9/1970', '2530 Clove Way', 'malves1l@hc360.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (59, 'Barclay', 'Ridgers', '12/25/1993', '49 Evergreen Terrace', 'bridgers1m@bluehost.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (60, 'Barrie', 'Jerman', '11/12/1965', '0 Russell Drive', 'bjerman1n@sohu.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (61, 'Lucina', 'Sommerled', '8/2/1952', '7 Columbus Crossing', 'lsommerled1o@prnewswire.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (62, 'Arin', 'Hassewell', '2/22/1989', '43774 Miller Drive', 'ahassewell1p@omniture.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (63, 'Terza', 'Bownas', '9/6/2011', '69 Stone Corner Trail', 'tbownas1q@mail.ru');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (64, 'Gweneth', 'Sanja', '8/22/1944', '33692 Onsgard Crossing', 'gsanja1r@youtu.be');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (65, 'Sande', 'Cudiff', '7/19/1972', '5144 Coolidge Street', 'scudiff1s@house.gov');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (66, 'Carroll', 'Murrhaupt', '6/21/1987', '420 Badeau Place', 'cmurrhaupt1t@bbb.org');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (67, 'Fernandina', 'Pople', '4/13/1963', '42 Mitchell Park', 'fpople1u@booking.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (68, 'Hernando', 'Trotton', '3/29/1971', '407 International Center', 'htrotton1v@feedburner.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (69, 'Morry', 'Brickner', '10/14/1964', '46 Pankratz Center', 'mbrickner1w@soundcloud.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (70, 'Amandy', 'Maciejewski', '5/18/1994', '207 Briar Crest Way', 'amaciejewski1x@free.fr');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (71, 'Nathanial', 'Prichet', '8/29/1979', '7 Heffernan Street', 'nprichet1y@nasa.gov');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (72, 'Urbain', 'Fishwick', '1/27/1962', '4781 Haas Circle', 'ufishwick1z@ow.ly');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (73, 'Damon', 'Wetheril', '11/12/1984', '1 Summit Terrace', 'dwetheril20@drupal.org');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (74, 'Tatiania', 'Nunnerley', '11/10/1985', '5941 Hoard Place', 'tnunnerley21@desdev.cn');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (75, 'Minny', 'Naisbit', '10/23/1954', '69 Brickson Park Lane', 'mnaisbit22@flavors.me');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (76, 'Danyette', 'Bazely', '3/17/1951', '4 Fisk Point', 'dbazely23@state.tx.us');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (77, 'Conrade', 'Madelin', '11/6/1944', '3139 Dennis Park', 'cmadelin24@xinhuanet.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (78, 'Carmel', 'Gillease', '8/20/1960', '97680 Scoville Way', 'cgillease25@scientificamerican.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (79, 'Wolfy', 'Dorkens', '12/8/2022', '9 Sloan Pass', 'wdorkens26@list-manage.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (80, 'Marcellina', 'Luigi', '2/7/1944', '88801 Grasskamp Road', 'mluigi27@pen.io');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (81, 'Roda', 'Commins', '10/24/1989', '40829 Porter Street', 'rcommins28@lulu.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (82, 'Stefan', 'Norquoy', '1/7/1985', '97040 South Junction', 'snorquoy29@tripadvisor.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (83, 'Jere', 'Ludee', '1/7/2002', '2 Farmco Center', 'jludee2a@theatlantic.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (84, 'Doy', 'Andres', '2/17/2012', '88277 Oxford Way', 'dandres2b@jalbum.net');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (85, 'Tanhya', 'Purslow', '5/29/1994', '991 Ilene Place', 'tpurslow2c@spiegel.de');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (86, 'Kenna', 'Gobeau', '11/1/1996', '6761 Heath Place', 'kgobeau2d@cdbaby.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (87, 'Georgine', 'Rupert', '12/17/1974', '2 Westerfield Crossing', 'grupert2e@skyrock.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (88, 'Stephen', 'Glaves', '9/11/1988', '4 Cascade Hill', 'sglaves2f@so-net.ne.jp');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (89, 'Kala', 'Gosnay', '7/27/2013', '24 International Way', 'kgosnay2g@cnet.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (90, 'Sutherlan', 'O''Scollain', '8/14/1984', '3 Claremont Junction', 'soscollain2h@homestead.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (91, 'Heywood', 'Baltrushaitis', '2/26/2011', '522 Pond Way', 'hbaltrushaitis2i@cbsnews.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (92, 'Robinetta', 'Evesque', '7/27/1990', '91 Forest Run Way', 'revesque2j@nydailynews.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (93, 'Evonne', 'Dulieu', '12/28/2001', '17701 Tennyson Street', 'edulieu2k@irs.gov');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (94, 'Ruby', 'Planque', '2/9/1999', '6526 Clyde Gallagher Park', 'rplanque2l@ucsd.edu');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (95, 'Kristel', 'Antoniou', '11/5/1941', '07 Dawn Drive', 'kantoniou2m@istockphoto.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (96, 'Ferdie', 'Courtonne', '2/6/1973', '3 1st Junction', 'fcourtonne2n@squarespace.com');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (97, 'Charmian', 'Kupker', '12/18/2016', '472 Hayes Place', 'ckupker2o@ftc.gov');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (98, 'Fancie', 'Simner', '4/13/1983', '526 Ruskin Avenue', 'fsimner2p@about.me');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (99, 'Hetty', 'Cecchi', '11/14/1943', '35420 Charing Cross Drive', 'hcecchi2q@w3.org');
+insert into Putnik (id_putnik, ime, prezime, datum_rodenja, prebivaliste, email) values (100, 'Rasia', 'Lorain', '9/12/1998', '670 Forest Run Trail', 'rlorain2r@ibm.com');
+
+
+insert into Aerodrom (id_aerodrom, naziv, grad) values (1, 'Split Airport', 'Split');
 insert into Aerodrom (id_aerodrom, naziv, grad) values (2, 'Botopasi Airport', 'Botopasi');
 insert into Aerodrom (id_aerodrom, naziv, grad) values (3, 'Plymouth City Airport', 'Plymouth');
 insert into Aerodrom (id_aerodrom, naziv, grad) values (4, 'Campbellpore Airport', 'Campbellpore');
@@ -191,7 +434,7 @@ insert into Aerodrom (id_aerodrom, naziv, grad) values (31, 'Tobago-Crown Point 
 insert into Aerodrom (id_aerodrom, naziv, grad) values (32, 'Swakopmund Airport', 'Swakopmund');
 insert into Aerodrom (id_aerodrom, naziv, grad) values (33, 'Hami Airport', 'Hami');
 insert into Aerodrom (id_aerodrom, naziv, grad) values (34, 'Sigonella Navy Air Base', 'Sigonella (CT)');
-insert into Aerodrom (id_aerodrom, naziv, grad) values (35, 'Bao''anying Airport', 'Panzhihua');
+insert into Aerodrom (id_aerodrom, naziv, grad) values (35, 'Vienna Airport', 'Beč');
 insert into Aerodrom (id_aerodrom, naziv, grad) values (36, 'Minsk National Airport', 'Minsk');
 insert into Aerodrom (id_aerodrom, naziv, grad) values (37, 'Koumac Airport', 'Koumac');
 insert into Aerodrom (id_aerodrom, naziv, grad) values (38, 'Amchitka Army Airfield', 'Amchitka Island');
@@ -258,208 +501,208 @@ insert into Aerodrom (id_aerodrom, naziv, grad) values (98, 'Yorketown Airport',
 insert into Aerodrom (id_aerodrom, naziv, grad) values (99, 'Julius Nyerere International Airport', 'Dar es Salaam');
 insert into Aerodrom (id_aerodrom, naziv, grad) values (100, 'Urmia Airport', 'Urmia');
 
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (1, 'Croatia Airlines', 126, 180, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (2, 'Croatia Airlines', 158, 112, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (3, 'Croatia Airlines', 273, 119, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (4, 'Wizz', 272, 207, 'na popravku');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (5, 'Wizz', 173, 170, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (6, 'ITA', 235, 225, 'na popravku');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (7, 'Ryanair', 124, 199, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (8, 'Turkish Airlines', 151, 271, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (9, 'Turkish Airlines', 115, 184, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (10, 'Air Canada', 255, 178, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (11, 'Ryanair', 287, 172, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (12, 'ITA', 209, 193, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (13, 'Turkish Airlines', 292, 183, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (14, 'Croatia Airlines', 252, 199, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (15, 'Wizz', 186, 234, 'na popravku');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (16, 'Croatia Airlines', 145, 135, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (17, 'Croatia Airlines', 259, 188, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (18, 'Ryanair', 279, 162, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (19, 'Air Canada', 296, 216, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (20, 'ITA', 209, 261, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (21, 'Ryanair', 248, 279, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (22, 'Croatia Airlines', 100, 211, 'na popravku');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (23, 'Turkish Airlines', 164, 296, 'na popravku');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (24, 'Ryanair', 291, 171, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (25, 'Turkish Airlines', 297, 138, 'na popravku');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (26, 'Ryanair', 221, 195, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (27, 'Croatia Airlines', 257, 289, 'na popravku');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (28, 'Air Canada', 238, 110, 'na popravku');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (29, 'Wizz', 252, 239, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (30, 'Turkish Airlines', 178, 297, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (31, 'Wizz', 289, 122, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (32, 'Turkish Airlines', 246, 174, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (33, 'Ryanair', 264, 280, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (34, 'Wizz', 145, 300, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (35, 'Wizz', 214, 123, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (36, 'Croatia Airlines', 186, 232, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (37, 'Croatia Airlines', 190, 229, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (38, 'ITA', 262, 209, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (39, 'Turkish Airlines', 257, 223, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (40, 'Ryanair', 149, 284, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (41, 'Turkish Airlines', 129, 174, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (42, 'Air Canada', 101, 275, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (43, 'Wizz', 137, 185, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (44, 'Air Canada', 202, 252, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (45, 'Wizz', 153, 277, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (46, 'Ryanair', 250, 176, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (47, 'Air Canada', 165, 150, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (48, 'Air Canada', 257, 277, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (49, 'Croatia Airlines', 195, 276, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (50, 'Air Canada', 246, 108, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (51, 'Croatia Airlines', 242, 156, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (52, 'Ryanair', 176, 212, 'na popravku');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (53, 'Croatia Airlines', 242, 231, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (54, 'Air Canada', 225, 170, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (55, 'ITA', 234, 243, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (56, 'Ryanair', 291, 175, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (57, 'Ryanair', 219, 216, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (58, 'Turkish Airlines', 228, 235, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (59, 'Ryanair', 138, 104, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (60, 'Ryanair', 121, 287, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (61, 'Wizz', 110, 115, 'na popravku');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (62, 'Ryanair', 205, 230, 'na popravku');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (63, 'ITA', 285, 222, 'na popravku');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (64, 'Croatia Airlines', 207, 240, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (65, 'ITA', 133, 129, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (66, 'Turkish Airlines', 273, 182, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (67, 'Turkish Airlines', 111, 172, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (68, 'Ryanair', 270, 152, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (69, 'ITA', 247, 261, 'na popravku');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (70, 'Croatia Airlines', 234, 218, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (71, 'Turkish Airlines', 108, 167, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (72, 'Wizz', 104, 117, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (73, 'ITA', 238, 255, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (74, 'Turkish Airlines', 170, 109, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (75, 'Ryanair', 280, 149, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (76, 'ITA', 298, 214, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (77, 'ITA', 146, 250, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (78, 'ITA', 171, 247, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (79, 'Air Canada', 158, 224, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (80, 'Wizz', 204, 153, 'na popravku');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (81, 'ITA', 169, 194, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (82, 'Air Canada', 299, 198, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (83, 'Air Canada', 186, 186, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (84, 'Croatia Airlines', 150, 142, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (85, 'Air Canada', 234, 282, 'na popravku');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (86, 'Croatia Airlines', 283, 111, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (87, 'Wizz', 134, 160, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (88, 'Croatia Airlines', 250, 158, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (89, 'Turkish Airlines', 172, 202, 'na prodaji');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (90, 'Wizz', 227, 117, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (91, 'Turkish Airlines', 207, 139, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (92, 'Air Canada', 137, 229, 'na popravku');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (93, 'Wizz', 289, 118, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (94, 'Ryanair', 264, 291, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (95, 'Croatia Airlines', 252, 251, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (96, 'Ryanair', 286, 245, 'na popravku');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (97, 'Ryanair', 223, 172, 'aktivan');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (98, 'Turkish Airlines', 150, 184, 'na popravku');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (99, 'Wizz', 243, 107, 'razmontiran');
-insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status) values (100, 'Turkish Airlines', 198, 242, 'aktivan');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (1, 'Air Canada', 191, 98, 'aktivan', '2/16/2007');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (2, 'AirDump', 127, 100, 'na popravku', '6/20/2013');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (3, 'Airbus', 142, 175, 'aktivan', '2/26/2013');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (4, 'Wizz', 124, 124, 'aktivan', '11/7/2007');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (5, 'AirDump', 103, 142, 'razmontiran', '4/20/2001');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (6, 'Ryanair', 146, 174, 'na popravku', '3/7/2015');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (7, 'Ryanair', 198, 179, 'na prodaji', '3/21/2010');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (8, 'Turkish Airlines', 88, 134, 'na prodaji', '5/30/2017');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (9, 'Airbus', 89, 143, 'aktivan', '5/10/2011');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (10, 'Turkish Airlines', 146, 105, 'aktivan', '3/1/2002');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (11, 'Wizz', 105, 123, 'na prodaji', '1/20/2016');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (12, 'Turkish Airlines', 196, 119, 'na popravku', '8/20/2017');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (13, 'Turkish Airlines', 123, 183, 'na prodaji', '3/17/2002');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (14, 'AirDump', 143, 154, 'na popravku', '8/25/2012');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (15, 'AirDump', 157, 95, 'na popravku', '10/6/2018');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (16, 'Air Canada', 109, 146, 'na popravku', '11/4/2007');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (17, 'Wizz', 165, 164, 'na prodaji', '11/4/2013');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (18, 'Airbus', 80, 105, 'aktivan', '2/17/2002');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (19, 'Wizz', 99, 134, 'na popravku', '11/1/2020');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (20, 'Air Canada', 197, 142, 'na prodaji', '12/30/2000');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (21, 'Ryanair', 191, 139, 'razmontiran', '7/23/2010');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (22, 'Wizz', 105, 84, 'aktivan', '5/18/2015');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (23, 'Air Canada', 106, 126, 'razmontiran', '3/15/2009');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (24, 'AirDump', 183, 82, 'razmontiran', '3/13/2021');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (25, 'Turkish Airlines', 143, 197, 'razmontiran', '6/26/2006');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (26, 'Turkish Airlines', 177, 182, 'aktivan', '5/10/2020');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (27, 'Wizz', 129, 187, 'na prodaji', '8/24/2009');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (28, 'Turkish Airlines', 102, 199, 'na prodaji', '5/11/2007');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (29, 'Ryanair', 143, 194, 'na popravku', '2/23/2005');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (30, 'Ryanair', 133, 110, 'razmontiran', '9/4/2018');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (31, 'Wizz', 194, 158, 'aktivan', '4/6/2004');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (32, 'Airbus', 129, 122, 'razmontiran', '12/12/2015');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (33, 'Wizz', 85, 81, 'aktivan', '5/11/2014');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (34, 'Air Canada', 106, 148, 'na popravku', '10/28/2024');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (35, 'Air Canada', 129, 171, 'na prodaji', '7/11/2013');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (36, 'Ryanair', 155, 120, 'razmontiran', '12/29/2001');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (37, 'AirDump', 99, 181, 'aktivan', '2/23/2003');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (38, 'AirDump', 137, 168, 'na popravku', '5/5/2016');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (39, 'Air Canada', 133, 142, 'aktivan', '10/6/2016');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (40, 'Air Canada', 119, 127, 'na popravku', '9/1/2022');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (41, 'Turkish Airlines', 112, 180, 'na popravku', '6/17/2014');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (42, 'AirDump', 169, 124, 'na prodaji', '10/5/2001');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (43, 'Wizz', 159, 159, 'na popravku', '7/7/2017');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (44, 'AirDump', 144, 126, 'aktivan', '4/18/2023');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (45, 'Airbus', 88, 191, 'na prodaji', '11/14/2001');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (46, 'Turkish Airlines', 129, 157, 'aktivan', '11/12/2013');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (47, 'Ryanair', 127, 100, 'na prodaji', '12/28/2014');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (48, 'AirDump', 138, 148, 'razmontiran', '3/23/2011');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (49, 'Airbus', 151, 152, 'razmontiran', '3/27/2024');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (50, 'Turkish Airlines', 81, 141, 'na popravku', '1/15/2018');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (51, 'Ryanair', 131, 142, 'aktivan', '12/30/2021');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (52, 'Air Canada', 199, 117, 'na prodaji', '7/2/2007');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (53, 'AirDump', 174, 148, 'razmontiran', '3/31/2012');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (54, 'Airbus', 126, 146, 'na popravku', '7/24/2009');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (55, 'Ryanair', 185, 142, 'na popravku', '7/11/2018');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (56, 'Air Canada', 91, 90, 'aktivan', '5/3/2014');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (57, 'Ryanair', 170, 87, 'razmontiran', '7/24/2005');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (58, 'Ryanair', 88, 97, 'aktivan', '6/10/2007');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (59, 'Turkish Airlines', 145, 106, 'aktivan', '8/18/2018');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (60, 'Ryanair', 151, 107, 'razmontiran', '12/7/2009');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (61, 'Air Canada', 134, 100, 'na popravku', '2/7/2002');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (62, 'AirDump', 84, 109, 'na popravku', '1/15/2003');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (63, 'Ryanair', 137, 145, 'na prodaji', '11/13/2007');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (64, 'Turkish Airlines', 159, 145, 'razmontiran', '8/29/2004');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (65, 'Ryanair', 186, 169, 'na prodaji', '8/31/2021');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (66, 'Airbus', 189, 139, 'na popravku', '5/3/2015');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (67, 'Turkish Airlines', 126, 200, 'na prodaji', '6/7/2011');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (68, 'Air Canada', 142, 93, 'aktivan', '8/12/2015');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (69, 'Air Canada', 188, 138, 'na popravku', '9/10/2022');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (70, 'Wizz', 113, 179, 'na prodaji', '11/19/2016');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (71, 'Airbus', 180, 150, 'na popravku', '12/25/2005');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (72, 'AirDump', 189, 82, 'aktivan', '9/10/2018');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (73, 'Ryanair', 192, 174, 'aktivan', '10/20/2004');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (74, 'AirDump', 94, 112, 'aktivan', '3/28/2001');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (75, 'Wizz', 158, 193, 'na prodaji', '4/5/2004');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (76, 'Air Canada', 132, 170, 'na prodaji', '7/7/2021');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (77, 'Air Canada', 113, 190, 'na popravku', '2/13/2013');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (78, 'Turkish Airlines', 168, 105, 'na popravku', '9/22/2022');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (79, 'Air Canada', 166, 148, 'aktivan', '2/18/2011');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (80, 'AirDump', 83, 92, 'razmontiran', '7/22/2007');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (81, 'Ryanair', 154, 180, 'aktivan', '4/10/2014');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (82, 'Ryanair', 185, 193, 'razmontiran', '5/5/2024');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (83, 'Wizz', 141, 80, 'aktivan', '12/18/2018');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (84, 'Ryanair', 152, 87, 'na popravku', '1/23/2010');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (85, 'Wizz', 106, 127, 'aktivan', '2/6/2004');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (86, 'Airbus', 123, 119, 'aktivan', '11/29/2021');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (87, 'Ryanair', 92, 199, 'na popravku', '7/19/2003');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (88, 'Ryanair', 85, 110, 'razmontiran', '2/5/2016');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (89, 'Wizz', 190, 110, 'razmontiran', '7/22/2014');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (90, 'Airbus', 117, 166, 'na prodaji', '7/1/2021');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (91, 'Air Canada', 184, 164, 'na popravku', '1/1/2001');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (92, 'Airbus', 131, 199, 'na prodaji', '5/21/2014');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (93, 'Airbus', 197, 153, 'razmontiran', '4/3/2019');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (94, 'Ryanair', 108, 110, 'na popravku', '4/12/2018');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (95, 'Airbus', 93, 191, 'na popravku', '2/14/2014');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (96, 'Ryanair', 171, 122, 'aktivan', '5/10/2014');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (97, 'Wizz', 133, 148, 'na prodaji', '12/31/2001');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (98, 'Ryanair', 123, 138, 'aktivan', '8/22/2009');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (99, 'Air Canada', 86, 175, 'na popravku', '6/22/2020');
+insert into Avion (id_avion, naziv, kapacitet_piste, kapacitet_skladista, status, datum_proizvodnje) values (100, 'Air Canada', 143, 135, 'razmontiran', '10/14/2014');
 
 
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (1, '9/24/2023', 184, 250.22, 37, 73, 43);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (2, '1/10/2023', 156, 685.43, 7, 81, 81);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (3, '11/17/2023', 264, 806.67, 49, 1, 90);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (4, '1/11/2024', 246, 417.03, 57, 77, 12);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (5, '7/7/2023', 273, 908.12, 50, 49, 65);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (6, '9/28/2024', 104, 644.72, 53, 16, 30);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (7, '2/20/2024', 260, 174.84, 56, 32, 59);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (8, '3/1/2024', 209, 392.81, 53, 67, 13);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (9, '5/4/2023', 177, 880.94, 66, 62, 4);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (10, '11/8/2024', 122, 981.56, 86, 12, 56);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (11, '1/1/2024', 237, 558.71, 76, 23, 97);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (12, '5/4/2024', 273, 597.97, 87, 79, 36);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (13, '10/25/2024', 123, 885.99, 38, 58, 8);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (14, '3/29/2023', 219, 658.66, 21, 10, 33);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (15, '3/26/2024', 255, 763.86, 63, 79, 30);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (16, '1/30/2023', 107, 166.9, 28, 24, 23);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (17, '5/11/2023', 136, 894.72, 27, 66, 53);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (18, '11/29/2023', 288, 197.98, 78, 71, 77);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (19, '12/19/2022', 300, 686.69, 44, 23, 48);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (20, '10/26/2024', 219, 325.14, 35, 32, 91);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (21, '4/2/2023', 214, 212.26, 96, 34, 18);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (22, '12/8/2023', 145, 977.86, 63, 28, 56);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (23, '5/18/2024', 168, 915.47, 59, 51, 9);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (24, '5/6/2024', 250, 240.43, 78, 99, 35);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (25, '2/4/2023', 183, 456.49, 13, 33, 15);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (26, '9/28/2024', 297, 675.92, 24, 23, 58);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (27, '9/19/2023', 122, 535.62, 41, 70, 24);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (28, '8/3/2023', 201, 117.99, 3, 25, 87);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (29, '8/30/2024', 203, 784.47, 67, 73, 71);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (30, '6/16/2024', 145, 201.48, 60, 76, 71);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (31, '2/29/2024', 177, 358.45, 70, 65, 5);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (32, '8/31/2023', 271, 163.2, 62, 92, 66);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (33, '12/11/2023', 174, 208.74, 100, 96, 6);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (34, '6/12/2024', 138, 677.58, 31, 11, 81);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (35, '12/10/2023', 298, 957.11, 97, 100, 68);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (36, '3/12/2024', 107, 722.47, 2, 18, 89);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (37, '4/8/2024', 273, 933.31, 91, 58, 80);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (38, '7/7/2023', 214, 695.8, 32, 87, 58);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (39, '8/31/2024', 102, 618.96, 1, 63, 23);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (40, '3/19/2023', 159, 403.53, 60, 54, 97);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (41, '7/29/2024', 287, 422.61, 48, 78, 100);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (42, '6/30/2024', 119, 801.62, 30, 2, 61);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (43, '3/15/2023', 119, 534.84, 66, 73, 36);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (44, '3/26/2023', 194, 583.58, 67, 58, 88);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (45, '8/25/2023', 109, 377.8, 29, 51, 61);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (46, '3/16/2023', 111, 481.9, 99, 65, 31);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (47, '6/9/2024', 209, 551.1, 100, 96, 4);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (48, '7/4/2023', 265, 739.34, 34, 57, 87);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (49, '5/9/2024', 279, 283.13, 23, 60, 60);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (50, '9/24/2024', 151, 804.97, 54, 18, 86);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (51, '4/2/2024', 222, 656.18, 49, 84, 17);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (52, '8/22/2024', 297, 298.69, 25, 74, 23);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (53, '6/20/2023', 110, 972.56, 19, 40, 88);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (54, '11/23/2024', 261, 241.04, 23, 17, 26);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (55, '12/5/2024', 189, 824.8, 35, 18, 2);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (56, '10/27/2023', 297, 703.91, 23, 84, 56);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (57, '9/24/2023', 229, 723.82, 62, 11, 16);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (58, '7/21/2023', 215, 872.66, 72, 51, 34);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (59, '3/23/2023', 280, 333.31, 25, 39, 58);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (60, '12/12/2023', 189, 890.38, 3, 24, 35);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (61, '1/27/2023', 282, 920.45, 83, 14, 8);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (62, '1/25/2024', 170, 234.46, 21, 31, 87);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (63, '6/4/2023', 215, 301.27, 22, 75, 29);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (64, '3/24/2023', 191, 999.05, 24, 10, 71);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (65, '12/17/2023', 272, 794.41, 100, 11, 69);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (66, '4/18/2024', 116, 450.1, 100, 83, 69);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (67, '8/11/2023', 171, 354.24, 42, 20, 32);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (68, '9/1/2024', 242, 689.6, 83, 56, 35);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (69, '4/14/2024', 236, 473.47, 95, 25, 78);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (70, '4/21/2023', 120, 651.03, 94, 9, 61);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (71, '6/23/2023', 147, 521.46, 27, 50, 36);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (72, '6/23/2023', 265, 467.81, 26, 53, 91);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (73, '8/8/2024', 225, 562.44, 59, 59, 16);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (74, '7/11/2023', 142, 990.0, 52, 72, 34);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (75, '4/25/2023', 147, 954.55, 35, 85, 45);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (76, '2/1/2024', 240, 979.76, 49, 37, 13);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (77, '3/3/2023', 233, 287.4, 72, 7, 56);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (78, '8/28/2024', 236, 681.33, 53, 10, 80);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (79, '7/4/2024', 159, 774.95, 23, 85, 48);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (80, '6/1/2023', 116, 571.62, 55, 25, 31);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (81, '3/15/2024', 239, 487.29, 47, 89, 6);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (82, '10/4/2024', 276, 774.67, 8, 69, 32);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (83, '8/24/2024', 142, 812.11, 93, 61, 15);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (84, '1/1/2023', 111, 840.34, 28, 16, 21);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (85, '1/20/2024', 142, 572.36, 58, 32, 20);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (86, '8/9/2023', 108, 398.15, 30, 1, 43);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (87, '8/28/2023', 235, 397.27, 10, 10, 6);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (88, '11/16/2024', 158, 945.77, 37, 79, 74);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (89, '7/12/2024', 218, 436.88, 2, 79, 98);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (90, '1/25/2024', 297, 269.49, 75, 100, 79);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (91, '2/15/2024', 256, 173.88, 90, 95, 78);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (92, '12/15/2023', 232, 473.29, 57, 23, 60);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (93, '6/3/2023', 255, 529.93, 99, 47, 54);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (94, '1/29/2024', 277, 933.37, 70, 11, 66);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (95, '5/3/2024', 269, 184.18, 37, 26, 92);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (96, '10/23/2024', 143, 704.68, 53, 48, 37);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (97, '2/10/2023', 254, 488.52, 45, 52, 78);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (98, '5/2/2024', 293, 329.82, 5, 18, 46);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (99, '6/20/2024', 133, 897.73, 81, 34, 69);
-insert into Let (id_let, datum, broj_prodanih_karata, cijena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (100, '6/18/2024', 118, 154.97, 40, 42, 45);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (1, '5/9/2024', 74, 4, 82, 78, 49);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (2, '9/28/2023', 79, 4, 84, 82, 45);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (3, '3/12/2023', 73, 5, 47, 99, 62);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (4, '1/15/2023', 100, 4, 34, 78, 44);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (5, '2/8/2023', 72, 2, 50, 93, 1);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (6, '11/3/2023', 71, 2, 87, 47, 20);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (7, '9/21/2023', 80, 1, 42, 53, 5);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (8, '3/15/2023', 81, 3, 87, 11, 7);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (9, '4/9/2023', 66, 1, 92, 78, 62);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (10, '11/16/2024', 98, 1, 95, 26, 62);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (11, '10/7/2023', 56, 5, 99, 14, 16);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (12, '6/29/2024', 79, 5, 64, 39, 8);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (13, '9/3/2023', 68, 5, 99, 51, 65);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (14, '1/21/2023', 87, 1, 87, 84, 4);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (15, '10/26/2023', 75, 1, 19, 14, 75);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (16, '3/15/2024', 76, 4, 16, 89, 31);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (17, '11/18/2023', 98, 4, 70, 32, 45);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (18, '9/5/2024', 94, 4, 26, 42, 95);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (19, '12/18/2023', 93, 3, 20, 28, 39);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (20, '11/9/2023', 86, 2, 93, 56, 94);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (21, '3/5/2023', 78, 2, 21, 96, 16);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (22, '11/5/2023', 78, 3, 1, 7, 61);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (23, '7/10/2024', 77, 5, 56, 11, 43);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (24, '10/21/2023', 58, 3, 42, 78, 28);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (25, '10/12/2024', 57, 1, 100, 56, 83);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (26, '8/15/2024', 82, 3, 17, 10, 48);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (27, '5/31/2024', 87, 5, 93, 90, 27);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (28, '11/7/2023', 81, 3, 21, 42, 28);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (29, '6/22/2024', 89, 2, 85, 45, 36);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (30, '1/26/2024', 84, 3, 25, 67, 37);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (31, '2/16/2023', 89, 2, 77, 27, 61);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (32, '11/4/2024', 52, 3, 5, 48, 13);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (33, '2/24/2023', 71, 4, 58, 47, 85);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (34, '3/21/2023', 72, 2, 100, 78, 17);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (35, '4/4/2024', 75, 1, 40, 57, 51);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (36, '3/23/2024', 98, 5, 99, 19, 43);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (37, '9/16/2023', 88, 2, 27, 3, 32);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (38, '4/4/2023', 78, 5, 76, 15, 4);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (39, '8/29/2023', 69, 3, 57, 77, 7);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (40, '2/7/2023', 61, 5, 76, 36, 70);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (41, '6/26/2024', 93, 5, 27, 24, 66);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (42, '3/30/2024', 86, 5, 14, 50, 75);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (43, '5/29/2024', 99, 4, 52, 63, 95);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (44, '12/3/2023', 99, 1, 14, 61, 39);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (45, '5/20/2024', 95, 5, 93, 13, 48);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (46, '8/23/2024', 64, 1, 75, 1, 94);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (47, '9/6/2023', 72, 2, 91, 3, 2);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (48, '12/31/2023', 94, 5, 43, 43, 69);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (49, '12/20/2023', 80, 5, 95, 76, 45);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (50, '9/24/2023', 82, 5, 69, 3, 59);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (51, '12/3/2023', 89, 1, 58, 58, 86);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (52, '5/12/2023', 85, 3, 82, 80, 6);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (53, '8/30/2023', 63, 2, 19, 96, 54);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (54, '11/12/2023', 52, 5, 83, 69, 3);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (55, '8/27/2023', 100, 3, 3, 78, 66);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (56, '11/15/2024', 90, 1, 98, 43, 4);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (57, '11/15/2024', 70, 4, 35, 98, 61);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (58, '1/20/2023', 61, 4, 69, 71, 18);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (59, '8/16/2024', 95, 1, 25, 79, 24);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (60, '6/17/2023', 52, 5, 8, 27, 66);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (61, '9/4/2023', 53, 2, 61, 86, 5);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (62, '9/25/2023', 57, 1, 89, 35, 15);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (63, '12/1/2023', 55, 1, 29, 62, 40);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (64, '10/17/2024', 52, 5, 39, 46, 26);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (65, '4/27/2024', 82, 4, 7, 97, 18);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (66, '2/23/2023', 100, 3, 56, 94, 73);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (67, '4/20/2024', 66, 3, 4, 35, 78);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (68, '10/18/2024', 97, 2, 35, 41, 25);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (69, '12/14/2023', 79, 2, 66, 75, 67);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (70, '9/3/2024', 72, 3, 97, 1, 82);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (71, '10/10/2023', 73, 5, 69, 100, 49);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (72, '1/21/2024', 90, 1, 71, 43, 81);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (73, '5/3/2024', 83, 2, 69, 77, 75);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (74, '4/26/2024', 82, 3, 7, 81, 41);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (75, '8/12/2023', 51, 3, 98, 51, 39);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (76, '8/21/2024', 68, 3, 16, 43, 39);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (77, '7/18/2024', 54, 3, 3, 19, 17);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (78, '2/13/2024', 80, 2, 68, 25, 10);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (79, '11/10/2023', 100, 5, 59, 18, 25);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (80, '2/15/2023', 75, 1, 14, 27, 75);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (81, '2/4/2023', 79, 1, 53, 59, 15);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (82, '2/23/2024', 99, 5, 88, 53, 84);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (83, '3/11/2024', 97, 4, 17, 16, 98);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (84, '2/11/2024', 90, 1, 84, 30, 40);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (85, '5/6/2024', 58, 4, 98, 75, 3);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (86, '10/24/2024', 97, 1, 10, 53, 61);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (87, '5/3/2023', 52, 5, 83, 19, 39);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (88, '1/28/2023', 69, 3, 99, 65, 74);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (89, '2/3/2023', 83, 1, 43, 2, 56);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (90, '8/2/2024', 85, 5, 60, 86, 11);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (91, '6/19/2024', 58, 5, 29, 90, 70);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (92, '8/12/2024', 91, 1, 25, 98, 83);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (93, '12/22/2022', 62, 3, 58, 66, 31);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (94, '1/3/2023', 58, 5, 51, 80, 87);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (95, '5/1/2024', 55, 1, 53, 48, 26);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (96, '6/3/2024', 63, 1, 18, 72, 72);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (97, '8/26/2023', 69, 4, 32, 75, 56);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (98, '6/29/2023', 74, 4, 46, 20, 43);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (99, '2/7/2024', 54, 4, 44, 55, 1);
+insert into Let (id_let, datum, broj_prodanih_karata, ocjena, aerodrom_polaska_id, aerodrom_dolaska_id, avion_id) values (100, '3/16/2024', 78, 3, 20, 52, 43);
 
 insert into Karta (id_karta, serijski_broj, putnik_id, let_id, sjedalo, aerodrom_dolaska_id, avion_id) values (1, '27-790-7770', 19, 36, 'G33', 59, 24);
 insert into Karta (id_karta, serijski_broj, putnik_id, let_id, sjedalo, aerodrom_dolaska_id, avion_id) values (2, '48-219-2462', 73, 77, 'T828', 97, 24);
@@ -562,5 +805,284 @@ insert into Karta (id_karta, serijski_broj, putnik_id, let_id, sjedalo, aerodrom
 insert into Karta (id_karta, serijski_broj, putnik_id, let_id, sjedalo, aerodrom_dolaska_id, avion_id) values (99, '58-818-4025', 54, 78, 'W32', 72, 40);
 insert into Karta (id_karta, serijski_broj, putnik_id, let_id, sjedalo, aerodrom_dolaska_id, avion_id) values (100, '26-243-6209', 42, 95, 'K162', 24, 96);
 
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (1, 95, 4, 54);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (2, 86, 1, 38);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (3, 17, 4, 43);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (4, 84, 4, 3);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (5, 43, 1, 54);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (6, 20, 5, 41);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (7, 68, 4, 25);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (8, 78, 1, 5);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (9, 14, 3, 5);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (10, 67, 1, 9);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (11, 96, 2, 32);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (12, 19, 5, 54);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (13, 44, 3, 53);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (14, 92, 5, 48);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (15, 36, 1, 23);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (16, 92, 1, 43);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (17, 61, 4, 19);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (18, 91, 1, 15);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (19, 79, 4, 46);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (20, 51, 4, 9);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (21, 63, 3, 57);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (22, 60, 2, 18);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (23, 66, 3, 44);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (24, 31, 3, 23);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (25, 55, 5, 39);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (26, 39, 4, 35);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (27, 84, 3, 13);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (28, 100, 3, 14);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (29, 18, 4, 21);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (30, 97, 1, 31);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (31, 41, 4, 8);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (32, 37, 1, 57);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (33, 57, 3, 34);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (34, 92, 4, 27);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (35, 80, 2, 51);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (36, 91, 2, 59);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (37, 65, 5, 51);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (38, 43, 2, 13);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (39, 61, 1, 60);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (40, 45, 1, 11);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (41, 50, 2, 45);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (42, 46, 4, 33);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (43, 2, 3, 17);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (44, 42, 4, 14);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (45, 33, 4, 54);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (46, 43, 5, 1);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (47, 1, 4, 29);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (48, 86, 1, 51);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (49, 56, 5, 40);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (50, 72, 5, 56);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (51, 23, 1, 24);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (52, 75, 5, 12);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (53, 34, 2, 39);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (54, 5, 3, 1);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (55, 40, 2, 28);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (56, 43, 2, 43);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (57, 88, 4, 16);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (58, 43, 5, 27);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (59, 71, 3, 58);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (60, 64, 3, 9);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (61, 74, 3, 15);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (62, 3, 3, 49);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (63, 23, 3, 58);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (64, 27, 2, 39);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (65, 58, 5, 12);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (66, 54, 1, 32);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (67, 45, 5, 25);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (68, 14, 4, 46);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (69, 80, 4, 38);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (70, 33, 4, 41);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (71, 11, 2, 4);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (72, 95, 2, 42);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (73, 74, 5, 59);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (74, 98, 5, 47);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (75, 94, 1, 48);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (76, 19, 5, 4);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (77, 41, 3, 4);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (78, 17, 3, 32);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (79, 62, 3, 23);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (80, 43, 5, 35);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (81, 28, 2, 52);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (82, 11, 3, 31);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (83, 36, 2, 24);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (84, 5, 4, 39);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (85, 4, 4, 19);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (86, 40, 1, 43);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (87, 42, 4, 49);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (88, 1, 3, 8);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (89, 64, 5, 16);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (90, 95, 4, 45);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (91, 44, 2, 11);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (92, 21, 2, 30);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (93, 86, 5, 2);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (94, 65, 3, 3);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (95, 41, 3, 4);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (96, 96, 2, 53);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (97, 99, 3, 51);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (98, 23, 2, 38);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (99, 50, 3, 55);
+insert into Loyalty_Kartica (id_loyalty, korisnik_id, trajanje_godina, broj_kupljenih_karata) values (100, 43, 4, 33);
 
+
+
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (1, 98, 8);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (2, 66, 93);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (3, 63, 12);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (4, 34, 84);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (5, 70, 46);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (6, 100, 34);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (7, 90, 77);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (8, 36, 17);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (9, 62, 16);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (10, 91, 69);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (11, 72, 32);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (12, 65, 54);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (13, 89, 99);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (14, 64, 98);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (15, 94, 77);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (16, 98, 83);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (17, 4, 70);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (18, 69, 8);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (19, 33, 86);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (20, 22, 50);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (21, 76, 56);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (22, 68, 74);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (23, 53, 6);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (24, 65, 27);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (25, 49, 98);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (26, 96, 95);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (27, 11, 41);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (28, 81, 5);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (29, 81, 42);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (30, 62, 7);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (31, 2, 62);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (32, 35, 68);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (33, 80, 80);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (34, 8, 83);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (35, 31, 42);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (36, 92, 40);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (37, 92, 59);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (38, 56, 60);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (39, 83, 92);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (40, 2, 93);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (41, 49, 13);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (42, 77, 54);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (43, 42, 6);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (44, 69, 43);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (45, 85, 89);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (46, 38, 85);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (47, 19, 41);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (48, 26, 73);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (49, 88, 62);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (50, 52, 8);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (51, 50, 94);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (52, 34, 14);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (53, 33, 55);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (54, 17, 53);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (55, 36, 95);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (56, 53, 47);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (57, 34, 63);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (58, 85, 84);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (59, 25, 24);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (60, 56, 19);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (61, 48, 9);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (62, 13, 71);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (63, 39, 31);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (64, 82, 66);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (65, 89, 64);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (66, 23, 42);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (67, 87, 38);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (68, 20, 68);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (69, 39, 59);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (70, 45, 50);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (71, 58, 7);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (72, 51, 49);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (73, 37, 54);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (74, 58, 58);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (75, 41, 89);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (76, 39, 37);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (77, 35, 83);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (78, 19, 36);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (79, 16, 63);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (80, 16, 25);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (81, 70, 77);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (82, 88, 89);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (83, 27, 97);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (84, 95, 99);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (85, 98, 83);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (86, 65, 67);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (87, 48, 38);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (88, 53, 4);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (89, 53, 24);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (90, 31, 5);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (91, 63, 54);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (92, 33, 13);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (93, 41, 83);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (94, 58, 31);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (95, 87, 30);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (96, 55, 67);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (97, 99, 22);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (98, 22, 18);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (99, 69, 66);
+insert into Let_Osoblje (id_let, id_osoblje, id_pilot) values (100, 77, 30);
+
+
+
+--●	ispis imena i modela svih aviona s kapacitetom većim od 100
+SELECT naziv FROM Avion 
+WHERE kapacitet_piste + kapacitet_skladista > 100;
+
+--●	ispis svih karata čija je cijena između 100 i 200 eura
+SELECT * FROM Karta 
+WHERE cijena BETWEEN 100 AND 200;
+
+--●	ispis svih pilotkinja s više od 20 odrađenih letova do danas
+SELECT * FROM Pilot 
+WHERE id_pilot 
+IN (SELECT id_pilot FROM Let_Osoblje 
+GROUP BY id_pilot HAVING COUNT(id_pilot) > 20);
+
+--●	ispis svih domaćina/ca zrakoplova koji su trenutno u zraku
+SELECT  Osoblje.ime, Osoblje.prezime
+FROM Osoblje
+JOIN Let_Osoblje ON Osoblje.id_osoblje = Let_Osoblje.id_osoblje
+JOIN Let ON Let_Osoblje.id_let = Let.id_let
+WHERE Let.datum BETWEEN NOW() - INTERVAL 30 MINUTE AND NOW();
+
+--●	ispis broja letova u Split/iz Splita 2023. godine
+SELECT COUNT(*) AS broj_letova
+FROM Let
+WHERE YEAR(datum) = 2023 
+AND (aerodrom_polaska_id =(SELECT id_aerodrom FROM Aerodrom WHERE grad = 'Split') 
+	 OR aerodrom_dolaska_id = (SELECT id_aerodrom FROM Aerodrom WHERE grad = 'Split'));
+
+--●	ispis svih letova za Beč u prosincu 2023.
+SELECT * FROM Let
+WHERE YEAR(datum) = 2023 AND MONTH(datum) = 12 
+AND (aerodrom_polaska_id = (SELECT id_aerodrom FROM Aerodrom WHERE grad = 'Beč') 
+	 OR aerodrom_dolaska_id = (SELECT id_aerodrom FROM Aerodrom WHERE grad = 'Beč'));
+
+--●	ispis prosječne ocjene letova kompanije AirDUMP
+SELECT AVG(ocjena) AS prosjecna_ocjena
+FROM Let
+WHERE avion_id IN (SELECT id_avion FROM Avion WHERE naziv = 'AirDUMP');
+
+--●	ispis svih aerodroma u Londonu, sortiranih po broju Airbus aviona trenutno na njihovim pistama
+SELECT Aerodrom.naziv FROM Aerodrom
+WHERE Aerodrom.grad = 'London';
+
+--●	smanjite cijenu za 20% svim kartama čiji letovi imaju manje od 20 ljudi
+UPDATE Karta
+SET cijena = cijena * 0.8
+WHERE let_id IN (SELECT id_let FROM Let WHERE broj_prodanih_karata < 20);
+
+
+--●	povisite plaću za 100 eura svim pilotima koji su ove godine imali više od 10 letova duljih od 10 sati
+UPDATE Pilot
+SET placa = placa + 100
+WHERE id_pilot IN (
+    SELECT id_pilot
+    FROM Let_Osoblje
+    JOIN Let ON Let_Osoblje.id_let = Let.id_let
+    WHERE EXTRACT(YEAR FROM Let.datum) = EXTRACT(YEAR FROM CURRENT_DATE) AND Let.trajanje > '10:00:00'
+    GROUP BY id_pilot
+    HAVING COUNT(Let_Osoblje.id_pilot) > 10
+);
+
+--●	razmontirajte avione starije od 20 godina koji nemaju letove pred sobom
+UPDATE Avion
+SET status = 'razmontiran'
+WHERE EXTRACT(YEAR FROM AGE(NOW(), datum_proizvodnje)) > 20
+  AND id_avion NOT IN (SELECT DISTINCT avion_id FROM Let);
+
+--●	izbrišite sve letove koji nemaju ni jednu prodanu kartu
+DELETE FROM Let
+WHERE id_let NOT IN (SELECT DISTINCT let_id FROM Karta);
+
+--●	izbrišite sve kartice vjernosti putnika čije prezime završava na -ov/a, -in/a
+DELETE FROM Loyalty_Kartica
+WHERE korisnik_id IN (SELECT id_putnik FROM Putnik WHERE prezime ILIKE '%ov' OR prezime ILIKE '%in');
 
